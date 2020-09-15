@@ -1,0 +1,48 @@
+# This pipeline is automatically created by CPaaS
+# when a new group is defined in the system.
+#
+# Result of this particular pipeline is a group build object.
+
+# id: (read-only)
+#
+# The ID is set by the system
+# It is the same as the group name.
+id: "test-group"
+
+# group: (read-only)
+#
+# Group that the pipeline is defined for.
+group: "test-group"
+
+################################
+
+# Below can be found keys that are predefined but can be changed
+# at any time.
+
+# name: (read-write)
+#
+# A few words to briefly describe the pipeline.
+name: "Main 'test-group' pipeline"
+
+# triggers: (read-write)
+#
+# This pipeline is triggered when one of the components
+# pipelines finish. It can be changed at any time.
+triggers:
+  - type: "pipeline"
+    id: "test-container"
+    quiet: "0h30m"
+  - type: "pipeline"
+    id: "test-operator-bundle"
+
+# stages: (read-write)
+#
+# There are no stages defined (yet).
+#
+# If no stages are defined in the pipeline
+# the pipeline still will run and produce
+# pipeline start and stop events for tracking.
+#
+# Stages can be added at any time by the group
+# (and therefore pipeline) owner.
+stages: []

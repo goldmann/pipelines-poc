@@ -1,0 +1,11 @@
+name: "Container group"
+id: "test-group"
+
+components:
+  # Container image
+  # Specific build is referenced
+  - id: "test-container"
+
+  # Operator bundle
+  # No build is referenced, so latest successful will be used
+  - id: "test-operator-bundle"

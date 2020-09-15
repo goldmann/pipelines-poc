@@ -1,0 +1,6 @@
+name: "Test product"
+id: "test-product"
+
+groups:
+  # Latest build of the project is referenced
+  - id: "test-group"

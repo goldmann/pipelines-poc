@@ -1,0 +1,13 @@
+name: "Java component"
+type: "java"
+id: "test-java"
+
+builds:
+  - name: "pnc"
+    type: "pig"
+    pig-source:
+      repo: "https://gitlab.cee.redhat.com/middleware/build-configurations.git"
+      ref: "cpaas-ci"
+      root: "cpaas/development"
+    staging-dir: "cpaas-tp"
+    brew-push: false

@@ -1,0 +1,93 @@
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "component-f3f45956-b3f1-427e-9dc4-c01a620d97ae"
+data:
+  definition: |
+    {"name":"Java component","type":"java","id":"f3f45956-b3f1-427e-9dc4-c01a620d97ae","builds":[{"name":"pnc","type":"pig","pig-source":{"repo":"https://gitlab.cee.redhat.com/middleware/build-configurations.git","ref":"cpaas-ci","root":"cpaas/development"},"staging-dir":"cpaas-tp","brew-push":false}]}
+---
+apiVersion: "tekton.dev/v1beta1"
+kind: "Task"
+metadata:
+  name: "cpaas-build-pig"
+spec:
+  workspaces:
+    - name: "target"
+    - name: "component"
+  params:
+    - name: "image"
+      type: "string"
+      description: "Container image providing implementation of the step"
+      default: "quay.io/cpaas/rhprod-executor:stable"
+    - name: "build-name"
+      type: "string"
+  steps:
+    - name: "execute"
+      image: "$(params.image)"
+      script: |
+        #!/bin/env python
+
+        import time
+
+        print("Build definition:")
+
+        with open('/workspace/component/definition') as f:
+          print(f.read())
+
+        print("Will use '$(params.build-name)' build")
+
+        print("Would run: uid_entrypoint cpaas build pig --component /workspace/component/definition --build $(params.build-name) --target $(workspaces.target.path)")
+
+        time.sleep(10)
+---
+apiVersion: "tekton.dev/v1beta1"
+kind: "Pipeline"
+metadata:
+  # This is based on the type of the pipeline and the ID of it
+  name: "component-f3f45956-b3f1-427e-9dc4-c01a620d97ae"
+  # TODO: add more metadata so that we can easily find the component
+spec:
+  workspaces:
+    # We want to provide a single workspace across every task within the pipeline
+    # This should be baked by a persistent volume
+    - name: "ws"
+    # In this specific volume we mount a ConfigMap that represents the component.
+    # The config map referenced here needs to be created by CPaaS before executing the pipeline.
+    - name: "component"
+  tasks:
+    # For every component build pipeline we make sure that we are
+    # Kerberos authenticated
+    # TODO: This may or may not be needed. It could be part of the build task itself, if required.
+    - name: kinit
+      timeout: "0h1m0s"
+      taskRef:
+        name: kinit
+      workspaces:
+        - name: "target"
+          workspace: "ws"
+
+    # This is the actual build execution
+    # We run it only after we have a Kerberos session active
+    # We reference the "cpaas-build-pig" task that is provided by CPaaS.
+    - name: build
+      timeout: "0h5m0s"
+      taskRef:
+        name: "cpaas-build-pig"
+      runAfter:
+        - kinit
+      params:
+        - name: "build-name"
+          value: "pnc"
+      workspaces:
+        - name: "target"
+          workspace: "ws"
+        - name: "component"
+          workspace: "component"
+  finally:
+    - name: kdestroy
+      timeout: "0h1m0s"
+      taskRef:
+        name: kdestroy
+      workspaces:
+        - name: "target"
+          workspace: "ws"

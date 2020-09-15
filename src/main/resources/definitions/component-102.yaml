@@ -1,0 +1,11 @@
+name: "RPM component"
+type: "rpm"
+id: "test-rpm"
+
+builds:
+  - type: "brew-rpm"
+    name: "cpaas-test-brew-rpm"
+    brew-source:
+      repo: "rpms/cpaas-test-brew-rpm"
+      ref: "cpaas-tp-1.7-rhel-7"
+    product-version: "RHEL-7-CPAASTP-1.7"

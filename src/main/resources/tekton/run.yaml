@@ -1,0 +1,19 @@
+apiVersion: "tekton.dev/v1beta1"
+kind: "PipelineRun"
+metadata:
+  generateName: "component-f3f45956-b3f1-427e-9dc4-c01a620d97ae-"
+spec:
+  pipelineRef:
+    name: "component-f3f45956-b3f1-427e-9dc4-c01a620d97ae"
+  workspaces:
+    - name: "ws"
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: 1Gi
+    - name: "component"
+      configmap:
+        name: "component-f3f45956-b3f1-427e-9dc4-c01a620d97ae"

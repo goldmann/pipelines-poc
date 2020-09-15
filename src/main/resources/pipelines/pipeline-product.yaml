@@ -1,0 +1,19 @@
+name: "Product containers pipeline"
+
+# The ID is set by the system at creation time
+id: "c0fd5373-430a-4c44-b215-25d3a78683ec"
+
+# In the product pipelines we reference one or more
+# groups. This will expose their metadata to the
+# pipeline.
+product: "test-product"
+
+groups:
+  - "test-group"
+
+stages:
+  - id: "errata-create-advisory"
+  - id: "errata-attach-builds"
+  - id: "errata-move-state"
+    params:
+      state: "ON_QE"

@@ -1,0 +1,25 @@
+name: "Container component"
+type: "container"
+id: "test-container"
+
+# References other components here.
+# If there are other components defined, the pipeline will be fed
+# with the metadata information from referenced builds of these components.
+# TODO: A Map? Maybe it's not needed, but it provides flexibility for the future
+components:
+  - id: "test-java"
+  - id: "test-rpm"
+
+image-type: "layered"
+host-level-access: "unprivileged"
+display-name: "Display name"
+description: "Some description"
+summary: "Some summary"
+
+builds:
+  - type: "brew-container"
+    name: "cpaas-test-brew-container"
+    brew-source:
+      repo: "containers/cpaas-test-brew-container"
+      ref: "cpaas-tp-1.7-rhel-7"
+    product-version: "RHEL-7-CPAASTP-1.7"

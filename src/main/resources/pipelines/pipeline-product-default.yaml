@@ -1,0 +1,19 @@
+name: "Product containers pipeline"
+
+# The ID is set by the system
+# It is the same as the product name.
+# (read-only)
+id: "test-product"
+
+# It references the product that it is defined
+# from.
+# (read-only)
+product: "test-product"
+
+# This pipeline is triggered when one of the group
+# pipelines finish.
+triggers:
+  - type: "pipeline" # TBD: quiet period
+    id: "test-group"
+
+stages: []

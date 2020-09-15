@@ -1,0 +1,18 @@
+name: "Simple custom group pipeline"
+
+# The ID is set by the system at pipeline definition time
+id: "c0247158-bb33-4018-bf8d-122ff811e5fa"
+
+# This is where the group is referenced
+# A group contains a set of components
+# This exposes the group metadata to the pipeline.
+# In this case the test group is a container image plus
+# operator bundle image
+group: "test-group"
+
+triggers:
+  - type: "pipeline"
+    name: "test-group"
+
+stages:
+  - id: "send-event"

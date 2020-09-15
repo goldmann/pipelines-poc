@@ -1,0 +1,16 @@
+name: "Operator bundle component"
+type: "container"
+id: "test-operator-bundle"
+
+# For an operator bundle to be successful we need to provide
+# metadata of container images that it should be aware of
+components:
+  - id: "test-container"
+
+builds:
+  - type: "operator-bundle"
+    name: "cpaas-test-brew-rpm"
+    brew-source:
+      repo: "container/cpaas-test-operator"
+      ref: "cpaas-tp-1.7-rhel-7"
+    product-version: "RHEL-7-CPAASTP-1.7"
