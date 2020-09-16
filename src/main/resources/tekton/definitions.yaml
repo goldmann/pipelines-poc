@@ -18,14 +18,14 @@ spec:
     - name: "image"
       type: "string"
       description: "Container image providing implementation of the step"
-      default: "quay.io/cpaas/rhprod-executor:stable"
+      default: "quay.io/goldmann/cpaas-poc-executor:latest"
     - name: "build-name"
       type: "string"
   steps:
     - name: "execute"
       image: "$(params.image)"
       script: |
-        #!/bin/env python
+        #!/bin/python3
 
         import time
 
@@ -97,14 +97,16 @@ kind: Task
 metadata:
   name: kinit
 spec:
-  params:
-    - name: cpaas-version
-      default: stable
   workspaces:
     - name: target
+  params:
+    - name: "image"
+      type: "string"
+      description: "Container image providing implementation of the step"
+      default: "quay.io/goldmann/cpaas-poc-executor:latest"
   steps:
     - name: "execute"
-      image: quay.io/cpaas/rhprod-executor:$(params.cpaas-version)
+      image: "$(params.image)"
       script: |
         #!/bin/sh
         set -xe
@@ -130,14 +132,16 @@ kind: Task
 metadata:
   name: kdestroy
 spec:
-  params:
-    - name: cpaas-version
-      default: stable
   workspaces:
     - name: target
+  params:
+    - name: "image"
+      type: "string"
+      description: "Container image providing implementation of the step"
+      default: "quay.io/goldmann/cpaas-poc-executor:latest"
   steps:
     - name: "execute"
-      image: quay.io/cpaas/rhprod-executor:$(params.cpaas-version)
+      image: "$(params.image)"
       script: |
         #!/bin/sh
         set -xe
